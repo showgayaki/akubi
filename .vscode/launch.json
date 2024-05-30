@@ -14,7 +14,7 @@
         // 起動前のタスクを指定します。「tasks.json」内「label」で指定した名前を記載します。
         "preLaunchTask": "debug msbuild",
         // 起動する（ビルドされた）実行ファイルパスを指定します。
-        "program": "${workspaceFolder}\\akubi\\bin\\x64\\Debug\\akubi.exe",
+        "program": "${workspaceFolder}\\akubi\\bin\\Debug\\akubi.exe",
         // 上記の実行ファイルに付加する引数を以下に記載します。
         "args": [],
         // 作業ファイルのあるディレクトリーパスを指定します。この例では実行ファイルのある場所です。

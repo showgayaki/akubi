@@ -1,29 +1,47 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
-using System.Linq;
+using System.Net;
 using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
+
+using akubi.lib;
 
 namespace akubi
 {
     public partial class akubi : ServiceBase
     {
+        readonly string hostName = Dns.GetHostName();
+        private Settings settings;
+
         public akubi()
         {
             InitializeComponent();
+            this.settings = new Settings();
         }
-        public void StartDebug(string[] args){ OnStart(args); }
+
+        public void StartDebug(string[] args) { OnStart(args); }
         public void StopDebug() { OnStop(); }
+
+        private void postLineNotify(string action)
+        {
+            var lineNotify = new LineNotify(this.settings.apiUrl, this.settings.lineToken);
+            lineNotify.sendMessage($"[{this.hostName}]が{action}");
+            lineNotify = null;
+        }
+
         protected override void OnStart(string[] args)
         {
+            //this.postLineNotify("起動しました");
         }
 
         protected override void OnStop()
         {
+            // this.postLineNotify("停止しています");
         }
+        protected override void OnShutdown()
+        {
+            this.postLineNotify("シャットダウンしています");
+        //base.OnShutdown();
+        }
+
     }
 }
