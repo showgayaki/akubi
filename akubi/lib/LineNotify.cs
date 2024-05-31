@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -11,8 +10,9 @@ namespace akubi.lib
         /// <summary>
         /// http://the-takeo.com/?p=773
         /// </summary>
-        private string apiUrl;
-        private string accessToken;
+        private readonly string apiUrl;
+        private readonly string accessToken;
+
         internal LineNotify(string apiUrl, string accessToken)
         {
             this.apiUrl = apiUrl;
@@ -41,7 +41,6 @@ namespace akubi.lib
                     Console.WriteLine(e);
                 }
             }
-
             return 0;
         }
     }

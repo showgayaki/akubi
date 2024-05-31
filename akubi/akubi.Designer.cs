@@ -31,7 +31,6 @@
             // 
             // akubi
             // 
-            this.CanShutdown = true;
             this.ServiceName = "akubi";
 
         }
