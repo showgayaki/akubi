@@ -31,7 +31,6 @@
             // 
             // akubi
             // 
-            this.CanHandlePowerEvent = true;
             this.CanShutdown = true;
             this.ServiceName = "akubi";
 

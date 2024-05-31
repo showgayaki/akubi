@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 
@@ -11,24 +13,36 @@ namespace akubi.lib
         /// </summary>
         private string apiUrl;
         private string accessToken;
-        public LineNotify(string apiUrl, string accessToken)
+        internal LineNotify(string apiUrl, string accessToken)
         {
             this.apiUrl = apiUrl;
             this.accessToken = accessToken;
         }
-        internal void sendMessage(string message)
+
+        internal int SendMessage(string message)
         {
             using (var client = new HttpClient())
             {
-                var content = new FormUrlEncodedContent(new Dictionary<string, string>
-                {
+                var content = new FormUrlEncodedContent(new Dictionary<string, string> {
                     { "message", $"\n{message}" },
                 });
 
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this.accessToken);
 
-                var result = client.PostAsync(this.apiUrl, content).Result;
+                try
+                {
+                    HttpResponseMessage res = client.PostAsync(this.apiUrl, content).Result;
+                    var statusCode = (int)res.StatusCode;
+
+                    return statusCode;
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
             }
+
+            return 0;
         }
     }
 }

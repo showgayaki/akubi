@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Net;
 using System.ServiceProcess;
 
@@ -21,27 +20,26 @@ namespace akubi
         public void StartDebug(string[] args) { OnStart(args); }
         public void StopDebug() { OnStop(); }
 
-        private void postLineNotify(string action)
+        private void PostLineNotify(string action)
         {
             var lineNotify = new LineNotify(this.settings.apiUrl, this.settings.lineToken);
-            lineNotify.sendMessage($"[{this.hostName}]が{action}");
+            int statusCode = lineNotify.SendMessage($"hostname: {this.hostName}\n{action}");
             lineNotify = null;
+            Console.WriteLine(statusCode);
         }
 
         protected override void OnStart(string[] args)
         {
-            //this.postLineNotify("起動しました");
+            this.PostLineNotify("起動しました");
         }
 
         protected override void OnStop()
         {
-            // this.postLineNotify("停止しています");
+            this.PostLineNotify($"{this.ServiceName}を停止しています");
         }
         protected override void OnShutdown()
         {
-            this.postLineNotify("シャットダウンしています");
-        //base.OnShutdown();
+            this.PostLineNotify("シャットダウンしています");
         }
-
     }
 }
