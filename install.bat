@@ -28,6 +28,7 @@ if %ERRORLEVEL%==0 (
     echo %SERVICE_NAME%はすでにインストールされています
     echo %SERVICE_NAME%をアンインストールします
 
+    sc stop %SERVICE_NAME%
     sc delete %SERVICE_NAME%
     call:install
 ) else (
