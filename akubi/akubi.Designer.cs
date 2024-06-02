@@ -1,6 +1,6 @@
 ﻿namespace akubi
 {
-    partial class akubi
+    partial class Akubi
     {
         /// <summary> 
         /// 必要なデザイナー変数です。

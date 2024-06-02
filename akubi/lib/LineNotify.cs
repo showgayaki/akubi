@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Threading.Tasks;
 
 namespace akubi.lib
 {
@@ -12,6 +13,8 @@ namespace akubi.lib
         /// </summary>
         private readonly string apiUrl;
         private readonly string accessToken;
+        private static readonly HttpClient client = new HttpClient();
+        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         internal LineNotify(string apiUrl, string accessToken)
         {
@@ -19,29 +22,29 @@ namespace akubi.lib
             this.accessToken = accessToken;
         }
 
-        internal int SendMessage(string message)
+        internal async Task<bool> SendMessageAsync(string message)
         {
-            using (var client = new HttpClient())
-            {
-                var content = new FormUrlEncodedContent(new Dictionary<string, string> {
+            var content = new FormUrlEncodedContent(new Dictionary<string, string> {
                     { "message", $"\n{message}" },
                 });
 
-                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this.accessToken);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", this.accessToken);
 
-                try
-                {
-                    HttpResponseMessage res = client.PostAsync(this.apiUrl, content).Result;
-                    var statusCode = (int)res.StatusCode;
+            logger.Info("Start to post LINE Notify.");
+            try
+            {
+                HttpResponseMessage response = await client.PostAsync(this.apiUrl, content);
+                var statusCode = (int)response.StatusCode;
 
-                    return statusCode;
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
+                if(statusCode == 200){
+                    return true;
                 }
             }
-            return 0;
+            catch (Exception e)
+            {
+                logger.Error(e);
+            }
+            return false;
         }
     }
 }
