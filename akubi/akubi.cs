@@ -17,7 +17,7 @@ namespace akubi
         private bool isConnected = false;
         private static readonly string hostName = Dns.GetHostName();
         private static readonly Settings settings = new Settings();
-        private static readonly LineNotify lineNotify = new LineNotify(settings.apiUrl, settings.lineToken);
+        private static readonly Discord discord = new Discord(settings.discordWebhookUrl);
         private static readonly Internet internet = new Internet(settings.connectCheckURl);
         private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
@@ -42,9 +42,9 @@ namespace akubi
             this.isConnected = await internet.IsConnectedAsync();
         }
 
-        private async void PostLineNotifyAsync(string action)
+        private async void PostDiscordAsync(string action)
         {
-            bool isPosted = await lineNotify.SendMessageAsync($"hostname: {hostName}\n{action}");
+            bool isPosted = await discord.SendMessageAsync($"hostname: {hostName}\n{action}");
 
             if (isPosted) { logger.Info("Post Result: OK"); }
             else { logger.Error("Post Result: NG"); }
@@ -58,7 +58,7 @@ namespace akubi
             if (this.isConnected)
             {
                 logger.Info("Internet Connection: OK");
-                this.PostLineNotifyAsync("起動しました");
+                this.PostDiscordAsync("起動しました");
             }
             else
             {
@@ -79,7 +79,7 @@ namespace akubi
             logger.Info("OnCustomCommand()");
             if (command == SERVICE_CONTROL_PRESHUTDOWN)
             {
-                this.PostLineNotifyAsync("シャットダウンしています");
+                this.PostDiscordAsync("シャットダウンしています");
             }
             else
             {

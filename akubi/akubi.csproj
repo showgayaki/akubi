@@ -108,7 +108,7 @@
     </Compile>
     <Compile Include="lib\Internet.cs" />
     <Compile Include="lib\Settings.cs" />
-    <Compile Include="lib\LineNotify.cs" />
+    <Compile Include="lib\Discord.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="ProjectInstaller.cs">
       <SubType>Component</SubType>
