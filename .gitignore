@@ -1,4 +1,5 @@
 App.local.config
+Emoji.cs
 *.InstallLog
 
 ## Ignore Visual Studio temporary files, build results, and

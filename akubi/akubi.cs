@@ -15,11 +15,10 @@ namespace akubi
         const int SERVICE_CONTROL_PRESHUTDOWN = 0xf;
 
         private bool isConnected = false;
-        private static readonly string hostName = Dns.GetHostName();
-        private static readonly Settings settings = new Settings();
-        private static readonly Discord discord = new Discord(settings.discordWebhookUrl);
-        private static readonly Internet internet = new Internet(settings.connectCheckURl);
-        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly string hostName = Dns.GetHostName();
+        private readonly Discord discord = new Discord(Settings.discordWebhookUrl);
+        private readonly Internet internet = new Internet(Settings.connectCheckURl);
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         public Akubi()
         {

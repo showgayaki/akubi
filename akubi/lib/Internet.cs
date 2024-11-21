@@ -13,18 +13,20 @@ namespace akubi.lib
         const int RETRY_COUNT = 10;
 
         private readonly string url;
-        private static readonly HttpClient client = new HttpClient();
-        private static readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
+        private readonly HttpClient client = new HttpClient();
+        private readonly NLog.Logger logger = NLog.LogManager.GetCurrentClassLogger();
 
         internal Internet(string url) {
             this.url = url;
+            // タイムアウトは3秒
+            client.Timeout = TimeSpan.FromMilliseconds(3000);
         }
 
         internal async Task<bool> IsConnectedAsync()
         {
             for (int i = 0; i < RETRY_COUNT; i++)
             {
-                logger.Info($"Start to check connect internet({i + 1}/{RETRY_COUNT})");
+                logger.Info($"Starting check connect internet({i + 1}/{RETRY_COUNT})");
                 try
                 {
                     var response = await client.GetAsync(url);
